@@ -1,6 +1,6 @@
 name: formal_languages
-description: A starting point for Dart libraries or applications.
-version: 1.0.0
+description: Formal languages implementation.
+version: 1.0.1
 # repository: https://github.com/my_org/my_repo
 
 environment:

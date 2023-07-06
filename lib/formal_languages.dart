@@ -4,10 +4,18 @@
 library;
 
 import 'package:formal_languages/formal_languages.dart';
+import 'package:formal_languages/src/annotations/annotations.dart';
 
 export 'src/formal_languages_base.dart';
 
-// TODO: Export any libraries intended for clients of this package.
+@ToDo(
+    what:
+        'Think if is necessary create an base class to implement in other instances.')
+abstract interface class FormalSystem {}
+
+base class DFA {
+  
+}
 
 void main(List<String> args) {
   Set<State> myStates = {
@@ -17,6 +25,6 @@ void main(List<String> args) {
     State(name: 'q3', isAccept: true, isInitial: false)
   };
   Set<TransitionFn> transitionTable = {
-    (actual: myStates.first, char: Symbol('a'), nextState: myStates.last )
+    (actual: myStates.first, char: Symbol('a'), nextState: myStates.last)
   };
 }
