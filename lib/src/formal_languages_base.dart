@@ -26,19 +26,36 @@ interface class State {
 /// Can be read as:
 /// If the actual state of automaton is 'q0', and the character read is 'a',
 /// assume the state 'q1'.
-typedef TransitionFn = ({State actual, Symbol char, State nextState});
+typedef DFATransitionFn = ({State actual, Symbol char, State nextState});
+typedef NFATransitionFn = ({State actual, Symbol char, Set<State> nextStates});
 
 sealed class FormalDefinition {}
 
 /// Formal definition of an automaton.
-base class Quintuple implements FormalDefinition {
+base class DFAQuintuple implements FormalDefinition {
   final Set<State> states;
   final Set<Symbol> alphabet;
-  final Set<TransitionFn> stateTable;
+  final Set<DFATransitionFn> stateTable;
   final State start;
   final Set<State> acceptStates;
 
-  const Quintuple({
+  const DFAQuintuple({
+    required this.states,
+    required this.alphabet,
+    required this.stateTable,
+    required this.start,
+    required this.acceptStates,
+  });
+}
+
+final class NFAQuintuple implements FormalDefinition {
+  final Set<State> states;
+  final Set<Symbol> alphabet;
+  final Set<NFATransitionFn> stateTable;
+  final State start;
+  final Set<State> acceptStates;
+
+  const NFAQuintuple({
     required this.states,
     required this.alphabet,
     required this.stateTable,
