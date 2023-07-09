@@ -8,23 +8,51 @@ import 'package:formal_languages/src/annotations/annotations.dart';
 
 export 'src/formal_languages_base.dart';
 
-@ToDo(
-    what:
-        'Think if is necessary create an base class to implement in other instances.')
-abstract interface class FormalSystem {}
+sealed class FormalSystem {}
 
-base class DFA {
-  
-}
+/// Deterministic finite automaton. A state machine capable to recognize words
+/// from an alphabet.
+base class DFA implements FormalSystem {
+  final Set<State> states;
+  final Set<Symbol> alphabet;
+  final Set<TransitionFn> stateTable;
+  final State start;
+  final Set<State> acceptStates;
+  State _actual;
 
-void main(List<String> args) {
-  Set<State> myStates = {
-    State(name: 'q0', isAccept: false, isInitial: true),
-    for (int i = 1; i < 3; i++)
-      State(name: 'q$i', isAccept: false, isInitial: false),
-    State(name: 'q3', isAccept: true, isInitial: false)
-  };
-  Set<TransitionFn> transitionTable = {
-    (actual: myStates.first, char: Symbol('a'), nextState: myStates.last)
-  };
+  State get actual => _actual;
+
+  DFA({required Quintuple quintuple})
+      : states = quintuple.states,
+        alphabet = quintuple.alphabet,
+        stateTable = quintuple.stateTable,
+        start = quintuple.start,
+        acceptStates = quintuple.acceptStates,
+        _actual = quintuple.start;
+
+  @ToDo(what: 'Implement the recognize method.')
+  bool recognize(String word) {
+    for (final char in word.iterable) {
+      final actualTransitionFn = _stateTransitionOf(_actual);
+      try {
+        final transition = actualTransitionFn.singleWhere(
+          (element) => element.char == char.toSymbol,
+        );
+        _actual = transition.next;
+      } on StateError {
+        return false;
+      }
+    }
+    return _actual.isAccept;
+  }
+
+  Iterable<({Symbol char, State next})> _stateTransitionOf(
+    State state,
+  ) sync* {
+    for (final transitionFn in stateTable) {
+      if (transitionFn.actual == state) {
+        yield (char: transitionFn.char, next: transitionFn.nextState);
+      }
+    }
+  }
 }
