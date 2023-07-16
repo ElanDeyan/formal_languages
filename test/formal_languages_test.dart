@@ -1,4 +1,4 @@
-import 'package:formal_languages/formal_languages.dart';
+import 'package:formal_languages/deterministic_finite_automaton.dart';
 import 'package:test/test.dart';
 
 void main() {
